@@ -1,0 +1,59 @@
+name: Daily Market Tracker
+on:
+  schedule:
+    - cron: '20 2 * * *' # 02:20 UTC, after regular US equity trading hours
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+concurrency:
+  group: tracker-pipeline
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download data and build history
+        run: python pipeline.py
+      - name: Commit latest data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history.csv data/status.json data/raw/ data/issue.md
+          git diff --cached --quiet || (git commit -m "data: update $(date -u +%F) market snapshots" && git push)
+      - name: Open/update today's issue and close previous date issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const runDate = new Date().toISOString().slice(0,10);
+            const title = `Market movements — ${runDate}`;
+            const body = fs.readFileSync('data/issue.md','utf8');
+            const {owner,repo} = context.repo;
+            const all = await github.paginate(github.rest.issues.listForRepo, {owner,repo,state:'open',per_page:100});
+            const same = all.find(i => !i.pull_request && i.title === title);
+            if (same) await github.rest.issues.update({owner,repo,issue_number:same.number,body});
+            else await github.rest.issues.create({owner,repo,title,body});
+            for(const i of all){
+              if(!i.pull_request && /^Market movements — \d{4}-\d{2}-\d{2}$/.test(i.title) && i.title!==title){
+                await github.rest.issues.update({owner,repo,issue_number:i.number,state:'closed'});
+              }
+            }
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - uses: actions/deploy-pages@v4
+        id: deployment

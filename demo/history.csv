@@ -1,0 +1,61 @@
+date,item_id,item,source,sector,close_usd,volume_shares,open_usd,high_usd,low_usd,market_date
+2026-10-29,CEG,Constellation Energy,Synthetic demo,Energy & Power,45.0,1368000,44.82,45.63,44.33,2026-10-29
+2026-10-29,VST,Vistra,Synthetic demo,Energy & Power,82.47,1667245,82.14,83.63,81.23,2026-10-29
+2026-10-29,NEE,NextEra Energy,Synthetic demo,Energy & Power,120.2,1789304,119.72,121.88,118.4,2026-10-29
+2026-10-29,GEV,GE Vernova,Synthetic demo,Electrical Equipment,157.87,1938152,157.24,160.08,155.5,2026-10-29
+2026-10-29,ETN,Eaton,Synthetic demo,Electrical Equipment,195.11,2362073,194.33,197.84,192.18,2026-10-29
+2026-10-29,VRT,Vertiv,Synthetic demo,Electrical Equipment,231.65,3067152,230.73,234.89,228.18,2026-10-29
+2026-10-29,PWR,Quanta Services,Synthetic demo,Engineering & Construction,267.45,3743598,266.38,271.2,263.44,2026-10-29
+2026-10-29,EME,EMCOR Group,Synthetic demo,Engineering & Construction,302.72,4035244,301.51,306.96,298.18,2026-10-29
+2026-10-29,FIX,Comfort Systems USA,Synthetic demo,Engineering & Construction,337.9,3918519,336.55,342.63,332.83,2026-10-29
+2026-10-29,DELL,Dell Technologies,Synthetic demo,Hardware & Components,373.57,3795121,372.07,378.8,367.96,2026-10-29
+2026-10-29,ANET,Arista Networks,Synthetic demo,Hardware & Components,410.22,4147890,408.58,415.97,404.07,2026-10-29
+2026-10-29,MU,Micron Technology,Synthetic demo,Hardware & Components,448.17,5053128,446.38,454.45,441.45,2026-10-29
+2026-10-29,CAT,Caterpillar,Synthetic demo,Infrastructure & Materials,487.36,6037953,485.41,494.18,480.05,2026-10-29
+2026-10-29,GLW,Corning,Synthetic demo,Infrastructure & Materials,527.36,6480494,525.25,534.74,519.45,2026-10-29
+2026-10-29,APH,Amphenol,Synthetic demo,Infrastructure & Materials,567.44,6216773,565.17,575.38,558.93,2026-10-29
+2026-10-30,CEG,Constellation Energy,Synthetic demo,Energy & Power,45.72,1290770,45.54,46.36,45.04,2026-10-30
+2026-10-30,VST,Vistra,Synthetic demo,Energy & Power,83.47,1459696,83.14,84.64,82.22,2026-10-30
+2026-10-30,NEE,NextEra Energy,Synthetic demo,Energy & Power,121.01,1636661,120.53,122.71,119.2,2026-10-30
+2026-10-30,GEV,GE Vernova,Synthetic demo,Electrical Equipment,158.06,2044102,157.42,160.27,155.69,2026-10-30
+2026-10-30,ETN,Eaton,Synthetic demo,Electrical Equipment,194.48,2703253,193.71,197.21,191.57,2026-10-30
+2026-10-30,VRT,Vertiv,Synthetic demo,Electrical Equipment,230.41,3346550,229.49,233.64,226.96,2026-10-30
+2026-10-30,PWR,Quanta Services,Synthetic demo,Engineering & Construction,266.18,3648302,265.11,269.9,262.18,2026-10-30
+2026-10-30,EME,EMCOR Group,Synthetic demo,Engineering & Construction,302.26,3575649,301.05,306.49,297.72,2026-10-30
+2026-10-30,FIX,Comfort Systems USA,Synthetic demo,Engineering & Construction,339.12,3489767,337.77,343.87,334.04,2026-10-30
+2026-10-30,DELL,Dell Technologies,Synthetic demo,Hardware & Components,377.07,3839005,375.56,382.35,371.41,2026-10-30
+2026-10-30,ANET,Arista Networks,Synthetic demo,Hardware & Components,416.1,4702912,414.43,421.92,409.86,2026-10-30
+2026-10-30,MU,Micron Technology,Synthetic demo,Hardware & Components,455.88,5646604,454.06,462.26,449.04,2026-10-30
+2026-10-30,CAT,Caterpillar,Synthetic demo,Infrastructure & Materials,495.79,6086029,493.81,502.73,488.35,2026-10-30
+2026-10-30,GLW,Corning,Synthetic demo,Infrastructure & Materials,535.08,5860073,532.94,542.57,527.05,2026-10-30
+2026-10-30,APH,Amphenol,Synthetic demo,Infrastructure & Materials,573.06,5451226,570.77,581.08,564.47,2026-10-30
+2026-11-02,CEG,Constellation Energy,Synthetic demo,Energy & Power,46.03,1130087,45.85,46.68,45.34,2026-11-02
+2026-11-02,VST,Vistra,Synthetic demo,Energy & Power,83.57,1335171,83.24,84.74,82.32,2026-11-02
+2026-11-02,NEE,NextEra Energy,Synthetic demo,Energy & Power,120.63,1726130,120.15,122.32,118.82,2026-11-02
+2026-11-02,GEV,GE Vernova,Synthetic demo,Electrical Equipment,157.22,2339353,156.59,159.42,154.86,2026-11-02
+2026-11-02,ETN,Eaton,Synthetic demo,Electrical Equipment,193.56,2949501,192.79,196.27,190.66,2026-11-02
+2026-11-02,VRT,Vertiv,Synthetic demo,Electrical Equipment,230.06,3261361,229.14,233.28,226.61,2026-11-02
+2026-11-02,PWR,Quanta Services,Synthetic demo,Engineering & Construction,267.13,3232778,266.06,270.87,263.12,2026-11-02
+2026-11-02,EME,EMCOR Group,Synthetic demo,Engineering & Construction,305.07,3184412,303.85,309.35,300.5,2026-11-02
+2026-11-02,FIX,Comfort Systems USA,Synthetic demo,Engineering & Construction,343.95,3530119,342.57,348.76,338.79,2026-11-02
+2026-11-02,DELL,Dell Technologies,Synthetic demo,Hardware & Components,383.51,4352695,381.98,388.88,377.76,2026-11-02
+2026-11-02,ANET,Arista Networks,Synthetic demo,Hardware & Components,423.25,5255255,421.56,429.18,416.9,2026-11-02
+2026-11-02,MU,Micron Technology,Synthetic demo,Hardware & Components,462.51,5691564,460.66,468.99,455.57,2026-11-02
+2026-11-02,CAT,Caterpillar,Synthetic demo,Infrastructure & Materials,500.67,5503373,498.67,507.68,493.16,2026-11-02
+2026-11-02,GLW,Corning,Synthetic demo,Infrastructure & Materials,537.35,5138451,535.2,544.87,529.29,2026-11-02
+2026-11-02,APH,Amphenol,Synthetic demo,Infrastructure & Materials,572.54,5282158,570.25,580.56,563.95,2026-11-02
+2026-11-03,CEG,Constellation Energy,Synthetic demo,Energy & Power,45.89,1033681,45.7,46.53,45.2,2026-11-03
+2026-11-03,VST,Vistra,Synthetic demo,Energy & Power,83.13,1408159,82.8,84.29,81.88,2026-11-03
+2026-11-03,NEE,NextEra Energy,Synthetic demo,Energy & Power,120.06,1975454,119.58,121.74,118.26,2026-11-03
+2026-11-03,GEV,GE Vernova,Synthetic demo,Electrical Equipment,156.98,2552453,156.35,159.18,154.62,2026-11-03
+2026-11-03,ETN,Eaton,Synthetic demo,Electrical Equipment,194.25,2874420,193.48,196.97,191.34,2026-11-03
+2026-11-03,VRT,Vertiv,Synthetic demo,Electrical Equipment,232.19,2889908,231.26,235.44,228.71,2026-11-03
+2026-11-03,PWR,Quanta Services,Synthetic demo,Engineering & Construction,270.91,2879057,269.83,274.7,266.85,2026-11-03
+2026-11-03,EME,EMCOR Group,Synthetic demo,Engineering & Construction,310.26,3221234,309.02,314.6,305.6,2026-11-03
+2026-11-03,FIX,Comfort Systems USA,Synthetic demo,Engineering & Construction,349.83,4002478,348.43,354.72,344.58,2026-11-03
+2026-11-03,DELL,Dell Technologies,Synthetic demo,Hardware & Components,389.06,4863907,387.5,394.51,383.22,2026-11-03
+2026-11-03,ANET,Arista Networks,Synthetic demo,Hardware & Components,427.4,5297099,425.69,433.38,420.99,2026-11-03
+2026-11-03,MU,Micron Technology,Synthetic demo,Hardware & Components,464.47,5146673,462.61,470.97,457.5,2026-11-03
+2026-11-03,CAT,Caterpillar,Synthetic demo,Infrastructure & Materials,500.22,4825675,498.22,507.22,492.72,2026-11-03
+2026-11-03,GLW,Corning,Synthetic demo,Infrastructure & Materials,534.99,4979084,532.85,542.48,526.97,2026-11-03
+2026-11-03,APH,Amphenol,Synthetic demo,Infrastructure & Materials,569.46,5865010,567.18,577.43,560.92,2026-11-03

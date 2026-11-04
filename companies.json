@@ -1,0 +1,17 @@
+[
+{"ticker":"CEG","name":"Constellation Energy","sector":"Energy & Power"},
+{"ticker":"VST","name":"Vistra","sector":"Energy & Power"},
+{"ticker":"NEE","name":"NextEra Energy","sector":"Energy & Power"},
+{"ticker":"GEV","name":"GE Vernova","sector":"Electrical Equipment"},
+{"ticker":"ETN","name":"Eaton","sector":"Electrical Equipment"},
+{"ticker":"VRT","name":"Vertiv","sector":"Electrical Equipment"},
+{"ticker":"PWR","name":"Quanta Services","sector":"Engineering & Construction"},
+{"ticker":"EME","name":"EMCOR Group","sector":"Engineering & Construction"},
+{"ticker":"FIX","name":"Comfort Systems USA","sector":"Engineering & Construction"},
+{"ticker":"DELL","name":"Dell Technologies","sector":"Hardware & Components"},
+{"ticker":"ANET","name":"Arista Networks","sector":"Hardware & Components"},
+{"ticker":"MU","name":"Micron Technology","sector":"Hardware & Components"},
+{"ticker":"CAT","name":"Caterpillar","sector":"Infrastructure & Materials"},
+{"ticker":"GLW","name":"Corning","sector":"Infrastructure & Materials"},
+{"ticker":"APH","name":"Amphenol","sector":"Infrastructure & Materials"}
+]
