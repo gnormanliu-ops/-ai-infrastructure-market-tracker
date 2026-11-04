@@ -22,4 +22,47 @@ function drawTrends(rows){$('#subtitle').textContent='All analysis is calculated
 function drawMain(){const metric=$('#metric').value;$('#chips').innerHTML=cur.map(r=>`<button class="chip ${selected.has(r.item_id)?'on':''}" data-ticker="${r.item_id}">${r.item_id}</button>`).join('');$('#chips').querySelectorAll('button').forEach(b=>b.onclick=()=>{selected.has(b.dataset.ticker)?selected.delete(b.dataset.ticker):selected.add(b.dataset.ticker);drawMain()});const tickers=[...selected];const series=tickers.map((t,i)=>({name:t,color:palette[i%palette.length],points:rows.filter(r=>r.item_id===t&&r[metric]!==''&&Number.isFinite(+r[metric])).map(r=>({x:r.date,y:+r[metric]}))}));lineChart($('#mainChart'),series);$('#seriesLegend').innerHTML=series.map(s=>`<span><i class="dot" style="background:${s.color}"></i>${s.name}</span>`).join('')}
 $('#metric').addEventListener('change',drawMain);drawMain();const grouped=grouping(rows,r=>r.item_id);const latest=cur.map(r=>{const a=grouped.get(r.item_id)||[];const first=a[0],last=a.at(-1);return {...r,initial:first,returnPct:first&&+first.close_usd?((+last.close_usd/+first.close_usd)-1)*100:0,volumeAvg:a.reduce((sum,r)=>sum+(+r.volume_shares||0),0)/a.length}});const returns=[...latest].sort((a,b)=>b.returnPct-a.returnPct),volumes=[...latest].sort((a,b)=>b.volumeAvg-a.volumeAvg);const gap=cur.length?Math.max(...cur.map(x=>+x.close_usd))-Math.min(...cur.map(x=>+x.close_usd)):0;const volumeByDate=[...grouping(rows,r=>r.date)].map(([d,list])=>({x:d,y:list.reduce((n,r)=>n+(+r.volume_shares||0),0)}));const maxVolume=volumeByDate.reduce((a,b)=>!a||b.y>a.y?b:a,null);
 const ideas=[{title:`${returns[0]?.item_id||'—'} leads cumulative performance`,desc:`Across ${dates.length} observed dates, ${returns[0]?.item_id||'—'} changed ${pct(returns[0]?.returnPct||0)} from its first to latest recorded close. Method: (latest close / first close − 1) × 100 for each ticker.`,chart:[{points:returns.slice(0,8).map((r,i)=>({x:r.item_id,y:r.returnPct}))}]},{title:`${volumes[0]?.item_id||'—'} leads average trading volume`,desc:`${volumes[0]?.item_id||'—'} averaged ${int(volumes[0]?.volumeAvg||0)} shares per tracked date. Method: sum recorded daily volume divided by recorded observations for each ticker.`,chart:[{points:volumes.slice(0,8).map(r=>({x:r.item_id,y:r.volumeAvg}))}]},{title:`Largest daily aggregate volume: ${maxVolume?.x||'—'}`,desc:`The maximum combined volume across tracked symbols was ${int(maxVolume?.y||0)} shares on ${maxVolume?.x||'—'}. Method: sum volume across the available symbols for each collection date; missing data is excluded.`,chart:[{points:volumeByDate}]},{title:`Latest price range spans ${money(gap)}`,desc:`Among ${cur.length} latest tracked closes, the highest is ${money(Math.max(...cur.map(x=>+x.close_usd)))} and the lowest is ${money(Math.min(...cur.map(x=>+x.close_usd)))}. Method: maximum latest close minus minimum latest close. Cross-stock prices are not valuation comparisons.`,chart:[{points:cur.map(r=>({x:r.item_id,y:+r.close_usd}))}]}];$('#findings').innerHTML=ideas.map((f,i)=>panel(f.title,`<p>${f.desc}</p><canvas class="chart" id="finding${i}"></canvas>`)).join('');ideas.forEach((f,i)=>lineChart($('#finding'+i),f.chart))}
-async function main(){const page=document.body.dataset.page;let rows=[],st={};try{rows=csv(await get('data/history.csv'));st=JSON.parse(await get('data/status.json'))}catch(err){console.warn('Production files unavailable',err)}if(!rows.length){try{rows=csv(await get('demo/history.csv'));st=JSON.parse(await get('demo/status.json'));$('#demoBanner').classList.remove('hidden');$('#demoBanner').textContent='DEMO PREVIEW — All visible prices and volumes are synthetic illustration data, not actual market quotes. Run the pipeline to replace this preview with real data.'}catch(err){$('#app').innerHTML='<div class="panel empty">No market data yet. Run python pipeline.py to populate data/history.csv.</div>';return}}if(page==='index')drawToday(rows,st);if(page==='browse')drawBrowse(rows);if(page==='trends')drawTrends(rows);window.addEventListener('resize',()=>{if(page==='trends')drawTrends(rows)})}main();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(console.error);
+const RUN_SCHEDULE_UTC='02:20 UTC';
+function centralFormat(value){if(!value)return 'No run recorded';const d=new Date(value);return Number.isNaN(d.valueOf())?'Invalid timestamp':new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',dateStyle:'medium',timeStyle:'short',timeZoneName:'short'}).format(d)}
+function centralRunSchedule(){return '8:20 PM CST / 9:20 PM CDT (previous calendar day)'}
+function renderUpdateStatus(st,productionRows,usingDemo){
+  const sources=Array.isArray(st.sources)?st.sources:[],ok=sources.filter(s=>s.ok).length;
+  const count=productionRows.length;
+  const latestDate=count?[...new Set(productionRows.map(r=>r.date))].sort().at(-1):null;
+  const todayUTC=new Date().toISOString().slice(0,10);
+  const todaysRows=productionRows.filter(r=>r.date===todayUTC);
+  const latestMarketDate=count?productionRows.map(r=>r.market_date).sort().at(-1):null;
+  const lastRun=st.run_time?new Date(st.run_time):null;
+  const ranTodayUTC=lastRun&&!Number.isNaN(lastRun.valueOf())&&lastRun.toISOString().slice(0,10)===todayUTC;
+  let condition=usingDemo?'No real quotes available':(count?'Live history available':'Awaiting real market data');
+  if(sources.length&&ok===0)condition='All sources failed on last run';
+  else if(sources.length&&ok<sources.length)condition='Partial source success';
+  const box=document.createElement('section');box.className='panel update-status';
+  box.innerHTML=`<h2>Daily update schedule & data health</h2>
+  <div class="update-grid">
+    <div><span class="update-label">Scheduled run</span><strong>Daily at ${RUN_SCHEDULE_UTC}</strong><small>${centralRunSchedule()} · GitHub Actions may start late</small></div>
+    <div><span class="update-label">Last attempt (Central)</span><strong>${esc(centralFormat(st.run_time))}</strong><small>Actual pipeline attempt, not a successful quote timestamp</small></div>
+    <div><span class="update-label">Last source result</span><strong class="${ok===0?'down':'up'}">${esc(condition)}</strong><small>${ok} / ${sources.length} sources succeeded</small></div>
+    <div><span class="update-label">Real market observations</span><strong>${count.toLocaleString('en-US')} rows</strong><small>Latest collection: ${esc(latestDate||'None')} · Market date: ${esc(latestMarketDate||'None')}</small></div>
+  </div>
+  <p class="update-note">Today's UTC collection (${todayUTC}): <b>${todaysRows.length} real rows</b>. ${ranTodayUTC?'A pipeline attempt is recorded today.':'No pipeline attempt recorded today in the latest status.'} ${usingDemo?'Visible charts and prices below are SYNTHETIC DEMO DATA, not real quotes.':''} Trading-day prices may not change on weekends or market holidays.</p>`;
+  document.querySelector('.hero').insertAdjacentElement('afterend',box);
+}
+async function main(){
+  const page=document.body.dataset.page;let productionRows=[],rows=[],st={},usingDemo=false;
+  try{const statusText=await get('data/status.json');st=JSON.parse(statusText)}catch(err){console.warn('Production status unavailable',err)}
+  try{productionRows=csv(await get('data/history.csv'));rows=productionRows}catch(err){console.warn('Production history unavailable',err)}
+  if(!rows.length){
+    usingDemo=true;
+    try{rows=csv(await get('demo/history.csv'));$('#demoBanner').classList.remove('hidden');$('#demoBanner').textContent='DEMO PREVIEW — All prices, volumes and charts below are synthetic illustration data. Live source health and actual collection counts are displayed separately above.'}
+    catch(err){$('#app').innerHTML='<div class="panel empty">No market data yet. Check the daily source status above.</div>'}
+  }
+  renderUpdateStatus(st,productionRows,usingDemo);
+  if(!rows.length)return;
+  // Keep production metadata truthful. Demo charts may use synthetic rows, but the data status panel never does.
+  if(page==='index')drawToday(rows,usingDemo?{...st,days_with_success:st.days_with_success||0,items:st.items||0}:st);
+  if(page==='browse')drawBrowse(rows);
+  if(page==='trends')drawTrends(rows);
+  window.addEventListener('resize',()=>{if(page==='trends')drawTrends(rows)});
+}
+main();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(console.error);
