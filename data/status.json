@@ -1,1 +1,100 @@
-{"run_time":null,"first_run_date":null,"days_with_success":0,"items":0,"new_today":[],"gone_today":[],"sources":[]}
+{
+  "run_time": "2026-11-04T02:06:04.334615Z",
+  "first_run_date": null,
+  "days_with_success": 0,
+  "items": 0,
+  "new_today": [],
+  "gone_today": [],
+  "sources": [
+    {
+      "name": "Stooq CEG",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq VST",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq NEE",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq GEV",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq ETN",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq VRT",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq PWR",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq EME",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq FIX",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq DELL",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq ANET",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq MU",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq CAT",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq GLW",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    },
+    {
+      "name": "Stooq APH",
+      "ok": false,
+      "count": 0,
+      "error": "Source did not return OHLCV CSV"
+    }
+  ]
+}
