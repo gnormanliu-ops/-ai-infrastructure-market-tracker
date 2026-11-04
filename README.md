@@ -1,5 +1,7 @@
 # AI Infrastructure Market Tracker
 
+[![Tests](https://github.com/gnormanliu-ops/-ai-infrastructure-market-tracker/actions/workflows/tests.yml/badge.svg)](https://github.com/gnormanliu-ops/-ai-infrastructure-market-tracker/actions/workflows/tests.yml)
+
 An independent Financial Data Analytics course project tracking 15 publicly traded companies in energy, electrical equipment, construction, servers, and physical infrastructure. Not the Job Watcher project.
 
 ## Tracking
