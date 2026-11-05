@@ -1,5 +1,5 @@
 {
-  "run_time": "2026-11-04T09:13:01.085720Z",
+  "run_time": "2026-11-05T09:29:44.151239Z",
   "first_run_date": null,
   "days_with_success": 0,
   "items": 0,
@@ -10,91 +10,91 @@
       "name": "Stooq CEG",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq VST",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq NEE",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq GEV",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq ETN",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq VRT",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq PWR",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq EME",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq FIX",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq DELL",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq ANET",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq MU",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq CAT",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq GLW",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     },
     {
       "name": "Stooq APH",
       "ok": false,
       "count": 0,
-      "error": "<urlopen error timed out>"
+      "error": "Source did not return OHLCV CSV"
     }
   ]
 }
