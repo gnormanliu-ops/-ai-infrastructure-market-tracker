@@ -29,7 +29,7 @@ const ideas=[
  {title:'Total shares traded by collection date',desc:'A genuine time-series line chart. Each date is the sum of reported share volume among companies observed on that collection date; missing companies are excluded.',kind:'line',unit:' shares',points:volumeByDate},
  {title:'Largest changes since previous collection',desc:movement.length?'Percentage changes in closing price between the two most recent tracker collection dates, ranked by absolute magnitude. Positive and negative bars extend in opposite directions.':'At least two successful collection dates are needed before price moves can be compared.',kind:'bar',unit:'%',signed:true,points:movement.map(r=>({x:r.item_id,y:r.delta}))}
 ];
-$('#findings').innerHTML=ideas.map((f,i)=>panel(f.title,\`<p>\${f.desc}</p><canvas class="chart" id="finding\${i}" role="img" aria-label="\${esc(f.title)}"></canvas><div class="legend">\${f.unit==='%'?'Values shown as percentages.':f.unit===' shares'?'Values shown in number of shares.':''}</div>\`)).join('');
+$('#findings').innerHTML=ideas.map((f,i)=>panel(f.title,`<p>${f.desc}</p><canvas class="chart" id="finding${i}" role="img" aria-label="${esc(f.title)}"></canvas><div class="legend">${f.unit==='%'?'Values shown as percentages.':f.unit===' shares'?'Values shown in number of shares.':''}</div>`)).join('');
 ideas.forEach((f,i)=>f.kind==='bar'?barChart($('#finding'+i),f.points,f.unit,f.signed):lineChart($('#finding'+i),[{name:f.title,points:f.points}]));
 }
 function barChart(canvas,points,unit='',signed=false){
