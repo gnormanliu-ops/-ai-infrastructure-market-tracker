@@ -9,7 +9,7 @@ import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent
@@ -49,43 +49,134 @@ def fetch_csv(ticker, run_date):
     return content
 
 
-def download(run_date, fetcher=fetch_csv, pause=0.75):
+
+def parse_yahoo_json(content, ticker, name, sector, run_date):
+    """Convert an unmodified Yahoo chart JSON response to one valid daily observation."""
+    payload = json.loads(content.decode("utf-8-sig"))
+    chart = payload.get("chart") or {}
+    results = chart.get("result") or []
+    if not results:
+        raise ValueError("Yahoo chart response has no results: " + str(chart.get("error"))[:100])
+    result = results[0]
+    timestamps = result.get("timestamp") or []
+    quotes = ((result.get("indicators") or {}).get("quote") or [])
+    if not quotes:
+        raise ValueError("Yahoo chart response missing OHLCV")
+    q = quotes[0]
+    tz_offset = int((result.get("meta") or {}).get("gmtoffset") or 0)
+    bars = []
+    for i, stamp in enumerate(timestamps):
+        trading_day = datetime.fromtimestamp(int(stamp) + tz_offset, timezone.utc).date().isoformat()
+        close = (q.get("close") or [])
+        volume = (q.get("volume") or [])
+        if trading_day > run_date or i >= len(close) or i >= len(volume):
+            continue
+        if close[i] is None or volume[i] is None or float(close[i]) <= 0 or int(volume[i]) < 0:
+            continue
+        bars.append((trading_day, i))
+    if not bars:
+        raise ValueError("Yahoo chart response has no valid market close")
+    trading_day, i = max(bars)
+    def price(k):
+        a = q.get(k) or []
+        return str(float(a[i])) if len(a) > i and a[i] is not None else ""
+    return {"date":run_date,"item_id":ticker,"item":name,"source":"Yahoo Finance","sector":sector,
+            "close_usd":price("close"),"volume_shares":str(int(q["volume"][i])),
+            "open_usd":price("open"),"high_usd":price("high"),"low_usd":price("low"),
+            "market_date":trading_day}
+
+
+def fetch_yahoo(ticker, run_date):
+    """Download Yahoo public daily chart JSON; try both official chart hosts."""
+    last_error = None
+    for host in ("query2.finance.yahoo.com", "query1.finance.yahoo.com"):
+        url = ("https://" + host + "/v8/finance/chart/" + quote(ticker) +
+               "?range=1mo&interval=1d")
+        req = Request(url, headers={
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "application/json", "Referer": "https://finance.yahoo.com/"
+        })
+        try:
+            with urlopen(req, timeout=12) as resp:
+                content = resp.read(250_001)
+            if len(content) > 250_000:
+                raise ValueError("Unexpectedly large Yahoo response")
+            parse_yahoo_json(content, ticker, ticker, "test", run_date)
+            return content
+        except Exception as exc:
+            last_error = exc
+    raise RuntimeError("Both Yahoo hosts failed: " + str(last_error)[:160])
+
+
+def download(run_date, fetcher=None, pause=0.5):
+    """Yahoo JSON first, Stooq CSV fallback. Retain each successful original response."""
     folder = DATA / "raw" / run_date
     folder.mkdir(parents=True, exist_ok=True)
     results = []
     for c in companies():
         ticker = c["ticker"]
-        target = folder / f"stooq_{ticker}.csv.gz"
-        target.unlink(missing_ok=True)  # Same-day reruns replace rather than reuse stale data.
-        try:
-            raw = fetcher(ticker, run_date)
-            parse_csv_bytes(raw, ticker, c["name"], c["sector"], run_date)  # Validate before persisting.
-            with target.open("wb") as stream:
-                with gzip.GzipFile(fileobj=stream, mode="wb", mtime=0) as f:
-                    f.write(raw)
-            results.append({"name":f"Stooq {ticker}", "ok":True, "count":1})
-        except Exception as exc:
-            results.append({"name":f"Stooq {ticker}", "ok":False, "count":0, "error":str(exc)[:180]})
-        if pause: time.sleep(pause)
+        targets = [folder / f"yahoo_{ticker}.json.gz", folder / f"stooq_{ticker}.csv.gz"]
+        # A second run on the same date must not reuse the earlier snapshot.
+        for target in targets:
+            target.unlink(missing_ok=True)
+        attempts = []
+        sources = (
+            [("Yahoo Finance", fetcher, parse_yahoo_json, targets[0])]
+            if fetcher is not None else
+            [("Yahoo Finance", fetch_yahoo, parse_yahoo_json, targets[0]),
+             ("Stooq", fetch_csv, parse_csv_bytes, targets[1])]
+        )
+        succeeded = False
+        for source_name, fn, parser, target in sources:
+            try:
+                raw = fn(ticker, run_date)
+                parser(raw, ticker, c["name"], c["sector"], run_date)
+                with target.open("wb") as stream:
+                    with gzip.GzipFile(fileobj=stream, mode="wb", mtime=0) as compressed:
+                        compressed.write(raw)
+                results.append({"name":f"{source_name} {ticker}", "ok":True, "count":1})
+                succeeded = True
+                break
+            except Exception as exc:
+                attempts.append(f"{source_name}: {str(exc)[:110]}")
+        if not succeeded:
+            results.append({"name":f"Yahoo/Stooq {ticker}", "ok":False, "count":0,
+                            "error":"; ".join(attempts)[:340]})
+        if pause:
+            time.sleep(pause)
     return results
 
 
 def raw_days():
     base = DATA / "raw"
-    return sorted(p for p in base.glob("????-??-??") if p.is_dir() and any(p.glob("*.csv.gz")))
+    return sorted(p for p in base.glob("????-??-??") if p.is_dir() and any(p.glob("*.gz")))
 
 
 def build():
+    """Only gzipped native source snapshots are used: deterministic reprocessing."""
     result = []
     lookup = {c["ticker"]: c for c in companies()}
     for day in raw_days():
-        for raw in sorted(day.glob("stooq_*.csv.gz")):
-            ticker = raw.name.removeprefix("stooq_").removesuffix(".csv.gz")
-            if ticker not in lookup: continue
+        # Prefer Yahoo when both sources exist; no duplicate item/date rows.
+        candidates = {}
+        for raw in sorted(day.glob("*.gz")):
+            filename = raw.name
+            if filename.startswith("yahoo_") and filename.endswith(".json.gz"):
+                ticker, parser, priority = filename[6:-8], parse_yahoo_json, 0
+            elif filename.startswith("stooq_") and filename.endswith(".csv.gz"):
+                ticker, parser, priority = filename[6:-7], parse_csv_bytes, 1
+            else:
+                continue
+            if ticker not in lookup:
+                continue
+            if ticker not in candidates or priority < candidates[ticker][0]:
+                candidates[ticker] = (priority, raw, parser)
+        for ticker, (_, raw, parser) in sorted(candidates.items()):
             c = lookup[ticker]
             try:
-                with gzip.open(raw, "rb") as f: payload = f.read()
-                result.append(parse_csv_bytes(payload, ticker, c["name"], c["sector"], day.name))
+                with gzip.open(raw, "rb") as f:
+                    payload = f.read()
+                result.append(parser(payload, ticker, c["name"], c["sector"], day.name))
             except Exception as exc:
                 print(f"Skipping invalid raw file {raw}: {exc}")
     result.sort(key=lambda r: (r["date"], r["item_id"]))
