@@ -121,7 +121,7 @@ def download(run_date, fetcher=None, pause=0.5):
             target.unlink(missing_ok=True)
         attempts = []
         sources = (
-            [("Yahoo Finance", fetcher, parse_yahoo_json, targets[0])]
+            [("Stooq", fetcher, parse_csv_bytes, targets[1])]
             if fetcher is not None else
             [("Yahoo Finance", fetch_yahoo, parse_yahoo_json, targets[0]),
              ("Stooq", fetch_csv, parse_csv_bytes, targets[1])]
