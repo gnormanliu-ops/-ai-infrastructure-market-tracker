@@ -7,7 +7,7 @@ on:
       - 'companies.json'
       - '.github/workflows/daily.yml'
   schedule:
-    - cron: '20 2 * * *' # 02:20 UTC, after regular US equity trading hours
+    - cron: '20 23 * * *' # 23:20 UTC = 5:20 PM CST / 6:20 PM CDT, after US market close
   workflow_dispatch:
 permissions:
   contents: write
@@ -15,7 +15,7 @@ permissions:
   pages: write
   id-token: write
 concurrency:
-  group: tracker-pipeline
+  group: github-pages-deploy
   cancel-in-progress: false
 jobs:
   update:
