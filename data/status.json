@@ -1,5 +1,5 @@
 {
-  "run_time": "2026-11-09T09:48:19.281759Z",
+  "run_time": "2026-11-09T23:24:26.695206Z",
   "first_run_date": null,
   "days_with_success": 0,
   "items": 0,
@@ -7,94 +7,94 @@
   "gone_today": [],
   "sources": [
     {
-      "name": "Stooq CEG",
+      "name": "Yahoo/Stooq CEG",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq VST",
+      "name": "Yahoo/Stooq VST",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq NEE",
+      "name": "Yahoo/Stooq NEE",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq GEV",
+      "name": "Yahoo/Stooq GEV",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq ETN",
+      "name": "Yahoo/Stooq ETN",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq VRT",
+      "name": "Yahoo/Stooq VRT",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq PWR",
+      "name": "Yahoo/Stooq PWR",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq EME",
+      "name": "Yahoo/Stooq EME",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq FIX",
+      "name": "Yahoo/Stooq FIX",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq DELL",
+      "name": "Yahoo/Stooq DELL",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq ANET",
+      "name": "Yahoo/Stooq ANET",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq MU",
+      "name": "Yahoo/Stooq MU",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq CAT",
+      "name": "Yahoo/Stooq CAT",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq GLW",
+      "name": "Yahoo/Stooq GLW",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     },
     {
-      "name": "Stooq APH",
+      "name": "Yahoo/Stooq APH",
       "ok": false,
       "count": 0,
-      "error": "Source did not return OHLCV CSV"
+      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
     }
   ]
 }

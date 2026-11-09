@@ -12,18 +12,18 @@ None
 None
 
 ## Source status
-- Stooq CEG: FAILED
-- Stooq VST: FAILED
-- Stooq NEE: FAILED
-- Stooq GEV: FAILED
-- Stooq ETN: FAILED
-- Stooq VRT: FAILED
-- Stooq PWR: FAILED
-- Stooq EME: FAILED
-- Stooq FIX: FAILED
-- Stooq DELL: FAILED
-- Stooq ANET: FAILED
-- Stooq MU: FAILED
-- Stooq CAT: FAILED
-- Stooq GLW: FAILED
-- Stooq APH: FAILED
+- Yahoo/Stooq CEG: FAILED
+- Yahoo/Stooq VST: FAILED
+- Yahoo/Stooq NEE: FAILED
+- Yahoo/Stooq GEV: FAILED
+- Yahoo/Stooq ETN: FAILED
+- Yahoo/Stooq VRT: FAILED
+- Yahoo/Stooq PWR: FAILED
+- Yahoo/Stooq EME: FAILED
+- Yahoo/Stooq FIX: FAILED
+- Yahoo/Stooq DELL: FAILED
+- Yahoo/Stooq ANET: FAILED
+- Yahoo/Stooq MU: FAILED
+- Yahoo/Stooq CAT: FAILED
+- Yahoo/Stooq GLW: FAILED
+- Yahoo/Stooq APH: FAILED
