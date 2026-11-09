@@ -108,18 +108,77 @@ def fetch_yahoo(ticker, run_date):
     raise RuntimeError("Both Yahoo hosts failed: " + str(last_error)[:160])
 
 
+TV_EXCHANGES = {"CEG":"NASDAQ","MU":"NASDAQ"}
+TV_COLUMNS = ["close","volume","open","high","low"]
+
+def fetch_tradingview():
+    """One raw JSON scan for exactly the 15 selected US tickers."""
+    tickers = [TV_EXCHANGES.get(c["ticker"],"NYSE") + ":" + c["ticker"] for c in companies()]
+    payload = {"symbols":{"tickers":tickers,"query":{"types":[]}},
+               "columns":TV_COLUMNS}
+    req = Request("https://scanner.tradingview.com/america/scan",
+                  data=json.dumps(payload).encode("utf-8"),
+                  headers={"Content-Type":"application/json",
+                           "User-Agent":"Mozilla/5.0",
+                           "Origin":"https://www.tradingview.com",
+                           "Referer":"https://www.tradingview.com/"},method="POST")
+    with urlopen(req,timeout=20) as response:
+        content = response.read(250_001)
+    if len(content)>250_000:
+        raise ValueError("TradingView response too large")
+    parsed = json.loads(content)
+    if not isinstance(parsed.get("data"),list):
+        raise ValueError("TradingView response has no data rows")
+    return content
+
+def parse_tradingview_json(content,ticker,name,sector,run_date):
+    """TradingView scanner returns a snapshot, not a timestamped EOD bar."""
+    parsed = json.loads(content.decode("utf-8-sig"))
+    matches = [r for r in parsed.get("data",[]) if r.get("s","").split(":")[-1]==ticker]
+    if not matches:
+        raise ValueError("Ticker missing from TradingView scan")
+    d=matches[0].get("d") or []
+    if len(d)<5 or d[0] is None or d[1] is None or float(d[0])<=0:
+        raise ValueError("TradingView missing valid close/volume")
+    def number(i):
+        return str(float(d[i])) if len(d)>i and d[i] is not None else ""
+    return {"date":run_date,"item_id":ticker,"item":name,"source":"TradingView","sector":sector,
+            "close_usd":number(0),"volume_shares":str(int(float(d[1]))),
+            "open_usd":number(2),"high_usd":number(3),"low_usd":number(4),
+            "market_date":""}
+
 def download(run_date, fetcher=None, pause=0.5):
     """Yahoo JSON first, Stooq CSV fallback. Retain each successful original response."""
     folder = DATA / "raw" / run_date
     folder.mkdir(parents=True, exist_ok=True)
     results = []
+    tv_content = None
+    tv_error = None
+    if fetcher is None:
+        try:
+            tv_content = fetch_tradingview()
+        except Exception as exc:
+            tv_error = str(exc)[:130]
     for c in companies():
         ticker = c["ticker"]
-        targets = [folder / f"yahoo_{ticker}.json.gz", folder / f"stooq_{ticker}.csv.gz"]
+        targets = [folder / f"yahoo_{ticker}.json.gz", folder / f"stooq_{ticker}.csv.gz", folder / f"tradingview_{ticker}.json.gz"]
         # A second run on the same date must not reuse the earlier snapshot.
         for target in targets:
             target.unlink(missing_ok=True)
         attempts = []
+        if tv_content is not None and fetcher is None:
+            try:
+                parse_tradingview_json(tv_content,ticker,c["name"],c["sector"],run_date)
+                with targets[2].open("wb") as stream:
+                    with gzip.GzipFile(fileobj=stream,mode="wb",mtime=0) as comp:
+                        comp.write(tv_content)
+                results.append({"name":f"TradingView {ticker}","ok":True,"count":1})
+                if pause: time.sleep(pause)
+                continue
+            except Exception as exc:
+                attempts.append("TradingView: "+str(exc)[:110])
+        elif tv_error:
+            attempts.append("TradingView: "+tv_error)
         sources = (
             [("Stooq", fetcher, parse_csv_bytes, targets[1])]
             if fetcher is not None else
@@ -161,10 +220,12 @@ def build():
         candidates = {}
         for raw in sorted(day.glob("*.gz")):
             filename = raw.name
-            if filename.startswith("yahoo_") and filename.endswith(".json.gz"):
-                ticker, parser, priority = filename[6:-8], parse_yahoo_json, 0
+            if filename.startswith("tradingview_") and filename.endswith(".json.gz"):
+                ticker, parser, priority = filename[12:-8], parse_tradingview_json, 0
+            elif filename.startswith("yahoo_") and filename.endswith(".json.gz"):
+                ticker, parser, priority = filename[6:-8], parse_yahoo_json, 1
             elif filename.startswith("stooq_") and filename.endswith(".csv.gz"):
-                ticker, parser, priority = filename[6:-7], parse_csv_bytes, 1
+                ticker, parser, priority = filename[6:-7], parse_csv_bytes, 2
             else:
                 continue
             if ticker not in lookup:
