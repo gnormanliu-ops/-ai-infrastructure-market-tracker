@@ -6,24 +6,24 @@ Rule: top 5 absolute percentage changes in closing price between the latest two 
 No comparable changes available.
 
 ## Appeared
-None
+ANET, APH, CAT, CEG, DELL, EME, ETN, FIX, GEV, GLW, MU, NEE, PWR, VRT, VST
 
 ## Disappeared
 None
 
 ## Source status
-- Yahoo/Stooq CEG: FAILED
-- Yahoo/Stooq VST: FAILED
-- Yahoo/Stooq NEE: FAILED
-- Yahoo/Stooq GEV: FAILED
-- Yahoo/Stooq ETN: FAILED
-- Yahoo/Stooq VRT: FAILED
-- Yahoo/Stooq PWR: FAILED
-- Yahoo/Stooq EME: FAILED
-- Yahoo/Stooq FIX: FAILED
-- Yahoo/Stooq DELL: FAILED
-- Yahoo/Stooq ANET: FAILED
-- Yahoo/Stooq MU: FAILED
-- Yahoo/Stooq CAT: FAILED
-- Yahoo/Stooq GLW: FAILED
-- Yahoo/Stooq APH: FAILED
+- TradingView CEG: OK
+- TradingView VST: OK
+- TradingView NEE: OK
+- TradingView GEV: OK
+- TradingView ETN: OK
+- TradingView VRT: OK
+- TradingView PWR: OK
+- TradingView EME: OK
+- TradingView FIX: OK
+- TradingView DELL: OK
+- TradingView ANET: OK
+- TradingView MU: OK
+- TradingView CAT: OK
+- TradingView GLW: OK
+- TradingView APH: OK

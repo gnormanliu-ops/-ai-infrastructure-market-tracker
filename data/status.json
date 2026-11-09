@@ -1,100 +1,101 @@
 {
-  "run_time": "2026-11-09T23:24:26.695206Z",
-  "first_run_date": null,
-  "days_with_success": 0,
-  "items": 0,
-  "new_today": [],
+  "run_time": "2026-11-09T23:26:09.690589Z",
+  "first_run_date": "2026-11-09",
+  "days_with_success": 1,
+  "items": 15,
+  "new_today": [
+    "ANET",
+    "APH",
+    "CAT",
+    "CEG",
+    "DELL",
+    "EME",
+    "ETN",
+    "FIX",
+    "GEV",
+    "GLW",
+    "MU",
+    "NEE",
+    "PWR",
+    "VRT",
+    "VST"
+  ],
   "gone_today": [],
   "sources": [
     {
-      "name": "Yahoo/Stooq CEG",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView CEG",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq VST",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView VST",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq NEE",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView NEE",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq GEV",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView GEV",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq ETN",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView ETN",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq VRT",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView VRT",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq PWR",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView PWR",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq EME",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView EME",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq FIX",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView FIX",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq DELL",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView DELL",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq ANET",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView ANET",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq MU",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView MU",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq CAT",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView CAT",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq GLW",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView GLW",
+      "ok": true,
+      "count": 1
     },
     {
-      "name": "Yahoo/Stooq APH",
-      "ok": false,
-      "count": 0,
-      "error": "Yahoo Finance: Both Yahoo hosts failed: HTTP Error 429: Too Many Requests; Stooq: Source did not return OHLCV CSV"
+      "name": "TradingView APH",
+      "ok": true,
+      "count": 1
     }
   ]
 }
