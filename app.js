@@ -21,7 +21,47 @@ const palette=['#59d6c6','#6caafa','#f0bd6d','#f186a5','#a99bff','#83ce7c'];
 function drawTrends(rows){$('#subtitle').textContent='All analysis is calculated in your browser from the growing daily history CSV.';const {cur,dates}=latestRows(rows);let selected=new Set(cur.slice(0,5).map(r=>r.item_id));$('#app').innerHTML=panel('Historical market series',`<div class="controls"><select id="metric">${nums.map(n=>`<option value="${n}">${labels[n]}</option>`).join('')}</select></div><div id="chips" class="multi"></div><canvas class="chart" id="mainChart"></canvas><div id="seriesLegend" class="legend"></div>`,'Choose any metric and the companies to compare; units and axis values update dynamically.')+`<h2 style="margin:35px 0 18px">Research findings <span class="muted">/ dynamically calculated</span></h2><div id="findings" class="finding-grid"></div>`;
 function drawMain(){const metric=$('#metric').value;$('#chips').innerHTML=cur.map(r=>`<button class="chip ${selected.has(r.item_id)?'on':''}" data-ticker="${r.item_id}">${r.item_id}</button>`).join('');$('#chips').querySelectorAll('button').forEach(b=>b.onclick=()=>{selected.has(b.dataset.ticker)?selected.delete(b.dataset.ticker):selected.add(b.dataset.ticker);drawMain()});const tickers=[...selected];const series=tickers.map((t,i)=>({name:t,color:palette[i%palette.length],points:rows.filter(r=>r.item_id===t&&r[metric]!==''&&Number.isFinite(+r[metric])).map(r=>({x:r.date,y:+r[metric]}))}));lineChart($('#mainChart'),series);$('#seriesLegend').innerHTML=series.map(s=>`<span><i class="dot" style="background:${s.color}"></i>${s.name}</span>`).join('')}
 $('#metric').addEventListener('change',drawMain);drawMain();const grouped=grouping(rows,r=>r.item_id);const latest=cur.map(r=>{const a=grouped.get(r.item_id)||[];const first=a[0],last=a.at(-1);return {...r,initial:first,returnPct:first&&+first.close_usd?((+last.close_usd/+first.close_usd)-1)*100:0,volumeAvg:a.reduce((sum,r)=>sum+(+r.volume_shares||0),0)/a.length}});const returns=[...latest].sort((a,b)=>b.returnPct-a.returnPct),volumes=[...latest].sort((a,b)=>b.volumeAvg-a.volumeAvg);const gap=cur.length?Math.max(...cur.map(x=>+x.close_usd))-Math.min(...cur.map(x=>+x.close_usd)):0;const volumeByDate=[...grouping(rows,r=>r.date)].map(([d,list])=>({x:d,y:list.reduce((n,r)=>n+(+r.volume_shares||0),0)}));const maxVolume=volumeByDate.reduce((a,b)=>!a||b.y>a.y?b:a,null);
-const ideas=[{title:`${returns[0]?.item_id||'—'} leads cumulative performance`,desc:`Across ${dates.length} observed dates, ${returns[0]?.item_id||'—'} changed ${pct(returns[0]?.returnPct||0)} from its first to latest recorded close. Method: (latest close / first close − 1) × 100 for each ticker.`,chart:[{points:returns.slice(0,8).map((r,i)=>({x:r.item_id,y:r.returnPct}))}]},{title:`${volumes[0]?.item_id||'—'} leads average trading volume`,desc:`${volumes[0]?.item_id||'—'} averaged ${int(volumes[0]?.volumeAvg||0)} shares per tracked date. Method: sum recorded daily volume divided by recorded observations for each ticker.`,chart:[{points:volumes.slice(0,8).map(r=>({x:r.item_id,y:r.volumeAvg}))}]},{title:`Largest daily aggregate volume: ${maxVolume?.x||'—'}`,desc:`The maximum combined volume across tracked symbols was ${int(maxVolume?.y||0)} shares on ${maxVolume?.x||'—'}. Method: sum volume across the available symbols for each collection date; missing data is excluded.`,chart:[{points:volumeByDate}]},{title:`Latest price range spans ${money(gap)}`,desc:`Among ${cur.length} latest tracked closes, the highest is ${money(Math.max(...cur.map(x=>+x.close_usd)))} and the lowest is ${money(Math.min(...cur.map(x=>+x.close_usd)))}. Method: maximum latest close minus minimum latest close. Cross-stock prices are not valuation comparisons.`,chart:[{points:cur.map(r=>({x:r.item_id,y:+r.close_usd}))}]}];$('#findings').innerHTML=ideas.map((f,i)=>panel(f.title,`<p>${f.desc}</p><canvas class="chart" id="finding${i}"></canvas>`)).join('');ideas.forEach((f,i)=>lineChart($('#finding'+i),f.chart))}
+
+const movement=[...cur].filter(r=>r.delta!=null).sort((a,b)=>Math.abs(b.delta)-Math.abs(a.delta)).slice(0,8);
+const ideas=[
+ {title:'Total return since first observation', desc:'Compare percentage price returns, not raw share prices. For each company: (latest close ÷ earliest recorded close − 1) × 100. Based on '+dates.length+' tracked collection dates; dividends are excluded.',kind:'bar',unit:'%',signed:true,points:returns.slice(0,10).map(r=>({x:r.item_id,y:r.returnPct}))},
+ {title:'Average daily shares traded',desc:'Compare trading activity across companies, with volume measured in shares. Each bar is total reported volume divided by the number of recorded observations for that company.',kind:'bar',unit:' shares',points:volumes.slice(0,10).map(r=>({x:r.item_id,y:r.volumeAvg}))},
+ {title:'Total shares traded by collection date',desc:'A genuine time-series line chart. Each date is the sum of reported share volume among companies observed on that collection date; missing companies are excluded.',kind:'line',unit:' shares',points:volumeByDate},
+ {title:'Largest changes since previous collection',desc:movement.length?'Percentage changes in closing price between the two most recent tracker collection dates, ranked by absolute magnitude. Positive and negative bars extend in opposite directions.':'At least two successful collection dates are needed before price moves can be compared.',kind:'bar',unit:'%',signed:true,points:movement.map(r=>({x:r.item_id,y:r.delta}))}
+];
+$('#findings').innerHTML=ideas.map((f,i)=>panel(f.title,\`<p>\${f.desc}</p><canvas class="chart" id="finding\${i}" role="img" aria-label="\${esc(f.title)}"></canvas><div class="legend">\${f.unit==='%'?'Values shown as percentages.':f.unit===' shares'?'Values shown in number of shares.':''}</div>\`)).join('');
+ideas.forEach((f,i)=>f.kind==='bar'?barChart($('#finding'+i),f.points,f.unit,f.signed):lineChart($('#finding'+i),[{name:f.title,points:f.points}]));
+}
+function barChart(canvas,points,unit='',signed=false){
+  if(!canvas)return;
+  const width=Math.max(280,canvas.getBoundingClientRect().width),height=Math.max(180,canvas.getBoundingClientRect().height),dpr=window.devicePixelRatio||1;
+  canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
+  const c=canvas.getContext('2d');c.scale(dpr,dpr);c.clearRect(0,0,width,height);
+  if(!points.length){c.fillStyle='#91a4b8';c.font='13px sans-serif';c.fillText('More real daily observations are needed.',18,55);return}
+  const margin={left:68,right:17,top:20,bottom:48},chartW=width-margin.left-margin.right,chartH=height-margin.top-margin.bottom;
+  const values=points.map(p=>Number(p.y)).filter(Number.isFinite);
+  if(!values.length)return;
+  const lo=Math.min(signed?0:0,...values),hi=Math.max(0,...values);
+  const span=(hi-lo)||1;
+  const x0=margin.left;
+  const yy=v=>margin.top+(hi-v)/span*chartH;
+  const baseline=yy(0);
+  c.strokeStyle='#40536c';c.lineWidth=1;c.beginPath();c.moveTo(x0,baseline);c.lineTo(width-margin.right,baseline);c.stroke();
+  c.font='11px sans-serif';c.textAlign='right';c.fillStyle='#91a4b8';
+  for(let tick=0;tick<=4;tick++){let v=lo+span*tick/4,y=yy(v);if(y<margin.top||y>height-margin.bottom)continue;c.fillText((Math.abs(v)>=1000000?(v/1000000).toFixed(1)+'M':Math.abs(v)>=1000?(v/1000).toFixed(1)+'K':v.toFixed(1))+(unit==='%'?'%':''),x0-8,y+4)}
+  const slot=chartW/points.length,bw=Math.min(46,slot*.68);
+  c.textAlign='center';
+  points.forEach((p,i)=>{
+    const v=Number(p.y);if(!Number.isFinite(v))return;
+    const x=margin.left+slot*i+slot/2,y=yy(v);
+    c.fillStyle=v<0?'#f186a5':'#59d6c6';
+    c.fillRect(x-bw/2,Math.min(y,baseline),bw,Math.max(1,Math.abs(baseline-y)));
+    c.fillStyle='#b8c9da';c.fillText(String(p.x).slice(0,11),x,height-margin.bottom+18);
+    c.fillStyle='#e9f2fb';const val=unit==='%'?v.toFixed(1)+'%':Math.abs(v)>=1000000?(v/1000000).toFixed(1)+'M':Math.abs(v)>=1000?(v/1000).toFixed(0)+'K':v.toFixed(0);
+    c.fillText(val,x,Math.max(12,Math.min(height-margin.bottom+32,v>=0?y-6:y+14)));
+  });
+}
+
 const RUN_SCHEDULE_UTC='02:20 UTC';
 function centralFormat(value){if(!value)return 'No run recorded';const d=new Date(value);return Number.isNaN(d.valueOf())?'Invalid timestamp':new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',year:'numeric',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(d)}
 function centralRunSchedule(){return '8:20 PM CST / 9:20 PM CDT (previous calendar day)'}
