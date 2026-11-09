@@ -62,9 +62,9 @@ function barChart(canvas,points,unit='',signed=false){
   });
 }
 
-const RUN_SCHEDULE_UTC='02:20 UTC';
+const RUN_SCHEDULE_UTC='23:20 UTC';
 function centralFormat(value){if(!value)return 'No run recorded';const d=new Date(value);return Number.isNaN(d.valueOf())?'Invalid timestamp':new Intl.DateTimeFormat('en-US',{timeZone:'America/Chicago',year:'numeric',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(d)}
-function centralRunSchedule(){return '8:20 PM CST / 9:20 PM CDT (previous calendar day)'}
+function centralRunSchedule(){return '5:20 PM CST / 6:20 PM CDT (same day)'}
 function renderUpdateStatus(st,productionRows,usingDemo){
   const sources=Array.isArray(st.sources)?st.sources:[],ok=sources.filter(s=>s.ok).length;
   const count=productionRows.length;
@@ -83,7 +83,7 @@ function renderUpdateStatus(st,productionRows,usingDemo){
     <div><span class="update-label">Scheduled run</span><strong>Daily at ${RUN_SCHEDULE_UTC}</strong><small>${centralRunSchedule()} · GitHub Actions may start late</small></div>
     <div><span class="update-label">Last attempt (Central)</span><strong>${esc(centralFormat(st.run_time))}</strong><small>Actual pipeline attempt, not a successful quote timestamp</small></div>
     <div><span class="update-label">Last source result</span><strong class="${ok===0?'down':'up'}">${esc(condition)}</strong><small>${ok} / ${sources.length} sources succeeded</small></div>
-    <div><span class="update-label">Real market observations</span><strong>${count.toLocaleString('en-US')} rows</strong><small>Latest collection: ${esc(latestDate||'None')} · Market date: ${esc(latestMarketDate||'None')}</small></div>
+    <div><span class="update-label">Real market observations</span><strong>${count.toLocaleString('en-US')} rows</strong><small>Latest collection: ${esc(latestDate||'None')} · Market date: ${esc(latestMarketDate||'Not provided by snapshot source')}</small></div>
   </div>
   <p class="update-note">Today's UTC collection (${todayUTC}): <b>${todaysRows.length} real rows</b>. ${ranTodayUTC?'A pipeline attempt is recorded today.':'No pipeline attempt recorded today in the latest status.'} ${usingDemo?'Visible charts and prices below are SYNTHETIC DEMO DATA, not real quotes.':''} Trading-day prices may not change on weekends or market holidays.</p>`;
   document.querySelector('.hero').insertAdjacentElement('afterend',box);
