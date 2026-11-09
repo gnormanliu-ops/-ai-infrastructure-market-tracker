@@ -1,5 +1,11 @@
 name: Daily Market Tracker
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'pipeline.py'
+      - 'companies.json'
+      - '.github/workflows/daily.yml'
   schedule:
     - cron: '20 2 * * *' # 02:20 UTC, after regular US equity trading hours
   workflow_dispatch:
