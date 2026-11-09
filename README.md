@@ -26,6 +26,10 @@ Each UTC run saves Stooq daily OHLCV CSV responses as compressed raw files, then
 
 **Move rule:** rank tracked items by absolute percentage change in closing price between their two most recent collected UTC dates, display top five and show old/new close. Daily Issues include new/gone items, including no-move days.
 
-**Source:** Stooq, CSV (`https://stooq.com/q/d/l/`), fetched separately for each of the 15 tickers with no login. Only the last available daily trading row up to each UTC run date is kept when building a normalized row; compressed raw responses are retained for reproducibility. Data availability is not guaranteed; failing sources must be reported without aborting the daily run. No demo prices are published as live history.
+**Sources:** Primary: TradingView US scanner, JSON snapshot (`https://scanner.tradingview.com/america/scan`), requested for the 15 selected tickers without login. Fallback: Yahoo Finance daily chart JSON, then Stooq daily CSV (`https://stooq.com/q/d/l/`). Only the last available daily trading row up to each UTC run date is kept when building a normalized row; compressed raw responses are retained for reproducibility. Data availability is not guaranteed; failing sources must be reported without aborting the daily run. No demo prices are published as live history.
 
 The source and seven-day run requirement must be verified using GitHub Actions. The first-run and due dates are posted on Blackboard. This repository is a course project, not investment advice.
+
+## Daily refresh
+
+Scheduled at **23:20 UTC every day**, which is **5:20 PM Central Standard Time / 6:20 PM Central Daylight Time**. Actual GitHub Actions start time may be later. The TradingView scanner is a real-market quote snapshot, not a guaranteed verified exchange close: its `market_date` is left empty because the response does not independently establish the market session date. The `date` field records the UTC collection day. No backfilled dates or synthetic production prices are used.
