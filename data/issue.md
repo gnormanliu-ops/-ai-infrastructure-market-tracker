@@ -1,12 +1,18 @@
-# Market movements — 2026-11-09
+# Market movements — 2026-11-11
 
 Rule: top 5 absolute percentage changes in closing price between the latest two collected run dates.
 
 ## Top moves
-No comparable changes available.
+| Ticker | Previous close ($) | Latest close ($) | Change |
+|---|---:|---:|---:|
+| GEV | 829.34 | 797.04 | -3.89% |
+| DELL | 346.31 | 334.38 | -3.44% |
+| GLW | 115.95 | 112.13 | -3.29% |
+| VRT | 200.47 | 194.22 | -3.12% |
+| CEG | 276.09 | 267.76 | -3.02% |
 
 ## Appeared
-ANET, APH, CAT, CEG, DELL, EME, ETN, FIX, GEV, GLW, MU, NEE, PWR, VRT, VST
+None
 
 ## Disappeared
 None

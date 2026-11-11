@@ -1,25 +1,9 @@
 {
-  "run_time": "2026-11-09T23:26:56.485433Z",
+  "run_time": "2026-11-11T02:50:19.958472Z",
   "first_run_date": "2026-11-09",
-  "days_with_success": 1,
+  "days_with_success": 2,
   "items": 15,
-  "new_today": [
-    "ANET",
-    "APH",
-    "CAT",
-    "CEG",
-    "DELL",
-    "EME",
-    "ETN",
-    "FIX",
-    "GEV",
-    "GLW",
-    "MU",
-    "NEE",
-    "PWR",
-    "VRT",
-    "VST"
-  ],
+  "new_today": [],
   "gone_today": [],
   "sources": [
     {
