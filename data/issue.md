@@ -1,15 +1,15 @@
-# Market movements — 2026-11-12
+# Market movements — 2026-11-13
 
 Rule: top 5 absolute percentage changes in closing price between the latest two collected run dates.
 
 ## Top moves
 | Ticker | Previous close ($) | Latest close ($) | Change |
 |---|---:|---:|---:|
-| MU | 725.11 | 811.30 | +11.89% |
-| DELL | 334.38 | 373.68 | +11.75% |
-| GLW | 112.13 | 120.46 | +7.43% |
-| VRT | 194.22 | 206.51 | +6.33% |
-| ANET | 185.02 | 196.68 | +6.30% |
+| ANET | 196.68 | 206.63 | +5.06% |
+| FIX | 1161.63 | 1128.09 | -2.89% |
+| CEG | 274.73 | 282.40 | +2.79% |
+| MU | 811.30 | 798.44 | -1.59% |
+| VRT | 206.51 | 209.64 | +1.52% |
 
 ## Appeared
 None
