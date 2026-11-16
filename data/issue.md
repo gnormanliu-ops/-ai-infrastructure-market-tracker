@@ -1,4 +1,4 @@
-# Market movements — 2026-11-15
+# Market movements — 2026-11-16
 
 Rule: top 5 absolute percentage changes in closing price between the latest two collected run dates.
 
